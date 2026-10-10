@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080808">
+<title>AEGIS VVIP Mobile Video Studio</title>
+<style>
+:root{--gold:#e2c16c;--gold2:#a67c28;--bg:#080808;--panel:#121212;--line:#342b19;--muted:#a7a092;--green:#7dd3a7}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#38280b 0,#111 33%,#070707 72%);color:#f6f1e4;font-family:system-ui,-apple-system,Arial,sans-serif}
+header{padding:24px 16px 20px;text-align:center;border-bottom:1px solid var(--line);background:#080808bb}
+.logo{height:54px;width:54px;margin:auto auto 9px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:28px;font-weight:900;box-shadow:0 0 24px #d7b45a22}
+h1{font-size:clamp(22px,6vw,30px);margin:0;color:var(--gold);letter-spacing:2px}
+header p{font-size:11px;color:#b6ac93;margin:7px 0 0;letter-spacing:1px}
+main{width:min(720px,94%);margin:17px auto 35px}
+.panel{background:linear-gradient(145deg,#171717,#0b0b0b);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:13px;box-shadow:0 10px 28px #0005}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}
+h2{font-size:13px;letter-spacing:1px;color:var(--gold);margin:0}
+.pill{font-size:10px;color:var(--gold);border:1px solid #66512a;border-radius:20px;padding:5px 8px}
+.pick{display:block;text-align:center;padding:18px 12px;border:1px dashed #9b7c39;border-radius:12px;background:#090909}
+.pick .big{font-size:28px;color:var(--gold)}
+.pick input{display:block;width:100%;margin-top:10px;font-size:12px}
+#fileInfo{color:#d7c48e;font-size:12px;margin-top:10px;overflow-wrap:anywhere}
+video{display:block;width:100%;max-height:270px;background:#000;border-radius:11px;margin-top:13px}
+.presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.preset{background:#0a0a0a;color:#ddd;border:1px solid #383022;padding:12px 5px;font-size:12px;letter-spacing:0;border-radius:10px}
+.preset.active{border-color:var(--gold);background:#28200e;color:#ffe8a1}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.toggle{display:flex;align-items:flex-start;gap:8px;padding:11px 9px;border:1px solid #30291c;border-radius:10px;background:#0a0a0a;font-size:12px}
+.toggle input{accent-color:var(--gold);margin:3px 0 0;flex-shrink:0}
+.toggle b{display:block;color:#f1dfac;font-size:12px;margin-bottom:4px}
+.toggle small{display:block;color:#999;font-size:10px;line-height:1.4}
+.settings{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.control{background:#0a0a0a;border:1px solid #30291c;border-radius:10px;padding:11px}
+.control label{display:flex;justify-content:space-between;gap:8px;color:#d7cfbc;font-size:12px}
+.control output{color:var(--gold);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--gold);margin:12px 0 0}
+select{width:100%;padding:11px;background:#090909;color:#eee;border:1px solid #51432a;border-radius:9px;margin-top:7px}
+.settinglabel{display:block;font-size:12px;color:#c9c1af;margin-top:11px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+button{cursor:pointer;border-radius:10px;font-weight:800}
+.primary{width:100%;border:0;padding:16px;background:linear-gradient(90deg,#a47a27,#f5dc91,#b38a34);color:#100d06;font-size:15px;letter-spacing:.5px}
+.secondary{padding:12px 8px;background:#171717;color:var(--gold);border:1px solid #6b5428;font-size:12px}
+button:disabled{opacity:.55;cursor:wait}
+#download{display:none;margin-top:10px}
+#status{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.5;color:#d7c99e;margin-top:12px}
+.track{height:7px;background:#292929;border-radius:20px;overflow:hidden;margin-top:10px}
+#bar{width:0;height:100%;background:var(--gold);transition:width .2s}
+.note{font-size:11px;line-height:1.55;color:#999386}
+.alert{border-left:3px solid var(--gold);padding:10px 11px;background:#18140b;color:#cfc3a0;font-size:11px;line-height:1.5;border-radius:0 8px 8px 0}
+footer{text-align:center;font-size:10px;color:#777064;padding:0 16px 25px}
+@media(max-width:380px){.grid,.settings{grid-template-columns:1fr}.panel{padding:13px}.presets{gap:5px}.preset{font-size:11px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">A</div>
+ <h1>AEGIS VVIP STUDIO</h1>
+ <p>MOBILE AUTO VIDEO EDITOR · REDMI NOTE 11</p>
+</header>
+<main>
+ <section class="panel">
+  <div class="sectionhead"><h2>01 / IMPORT VIDEO</h2><span class="pill">LOCAL FILE</span></div>
+  <label class="pick"><div class="big">＋</div><b>Choose your video</b><input id="file" type="file" accept="video/*"><div id="fileInfo">No video selected</div></label>
+  <video id="preview" controls playsinline hidden></video>
+ </section>
+
+ <section class="panel">
+  <div class="sectionhead"><h2>02 / ONE-TAP LOOKS</h2><span class="pill">PRESETS</span></div>
+  <div class="presets">
+   <button class="preset active" data-preset="balanced">✨ Balanced</button>
+   <button class="preset" data-preset="vivid">🎨 Vivid</button>
+   <button class="preset" data-preset="cinema">🎬 Cinema</button>
+  </div>
+  <p class="note">Presets adjust the sliders below. You can fine-tune every setting before exporting.</p>
+ </section>
+
+ <section class="panel">
+  <div class="sectionhead"><h2>03 / VIDEO ADJUSTMENTS</h2><span class="pill">MANUAL CONTROL</span></div>
+  <div class="settings">
+   <div class="control"><label for="brightness">Brightness <output id="brightnessOut">0</output></label><input id="brightness" type="range" min="-20" max="20" value="0"></div>
+   <div class="control"><label for="contrast">Contrast <output id="contrastOut">100%</output></label><input id="contrast" type="range" min="70" max="140" value="100"></div>
+   <div class="control"><label for="saturation">Saturation <output id="saturationOut">100%</output></label><input id="saturation" type="range" min="0" max="180" value="100"></div>
+   <div class="control"><label for="sharp">Sharpness <output id="sharpOut">0</output></label><input id="sharp" type="range" min="0" max="10" value="3"></div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="sectionhead"><h2>04 / CLEAN AUDIO</h2><span class="pill">LIGHT FILTERS</span></div>
+  <div class="grid">
+   <label class="toggle"><input id="noise" type="checkbox" checked><span><b>Audio noise reduction</b><small>Reduce steady background hiss</small></span></label>
+   <label class="toggle"><input id="enhance" type="checkbox" checked><span><b>Voice enhancement</b><small>Voice clarity and loudness balance</small></span></label>
+  </div>
+ </section>
+
+ <section class="panel">
+  <div class="sectionhead"><h2>05 / EXPORT QUALITY</h2><span class="pill">PHONE FRIENDLY</span></div>
+  <label class="settinglabel">Resolution
+   <select id="resolution"><option value="720">720p · Recommended for Redmi Note 11</option><option value="1080">1080p · Higher load</option><option value="source">Original resolution</option></select>
+  </label>
+  <label class="settinglabel">Video bitrate
+   <select id="bitrate"><option value="4">4 Mbps · Smaller file</option><option value="6" selected>6 Mbps · Balanced</option><option value="8">8 Mbps · Higher quality</option><option value="12">12 Mbps · Large file</option></select>
+  </label>
+  <label class="settinglabel">Frame rate
+   <select id="fps"><option value="source" selected>Keep original · Recommended</option><option value="30">30 FPS</option><option value="60">60 FPS · Extra processing</option></select>
+  </label>
+  <label class="settinglabel">Stabilization
+   <select id="stabilize"><option value="off" selected>Off · Faster</option><option value="on">Deshake filter · Slower</option></select>
+  </label>
+  <div class="alert" style="margin-top:13px">Not included in this mobile build: AI 4K detail restoration, true autofocus, and automatic English speech captions. Those require extra AI models and may overwhelm mobile-browser memory. This page will not pretend those tasks were completed.</div>
+ </section>
+
+ <section class="panel">
+  <div class="sectionhead"><h2>06 / START EDITING</h2><span class="pill">ONE BUTTON</span></div>
+  <button id="run" class="primary">⚡ AUTO EDIT VIDEO</button>
+  <div class="track"><div id="bar"></div></div>
+  <div id="status">Choose a video up to 5 minutes, adjust the look, then tap Auto Edit Video.</div>
+  <button id="download" class="secondary">⬇ DOWNLOAD EDITED VIDEO</button>
+  <div class="actions">
+   <button id="reset" class="secondary">RESET ADJUSTMENTS</button>
+   <button id="clear" class="secondary">CLEAR VIDEO</button>
+  </div>
+  <p class="note">No account, personal database or paid API. First use needs internet to load the video engine. Keep this page open during processing. Maximum video length: 5 minutes. On a 6GB RAM phone, longer clips and large files may still run out of memory; 720p is the safest export setting. Open this page from an HTTPS website (such as GitHub Pages), not from Downloads/content://, so the video engine Worker can load.</p>
+ </section>
+</main>
+<footer>AEGIS VVIP STUDIO · HTML / CSS / JavaScript</footer>
+
+<script type="module">
+const $=id=>document.getElementById(id);
+let videoFile=null, ffmpeg=null, ready=false, resultUrl=null, previewUrl=null;
+const tell=s=>$('status').textContent=s;
+const prog=n=>$('bar').style.width=Math.max(0,Math.min(100,n))+'%';
+
+const defaults={brightness:0,contrast:100,saturation:100,sharp:3};
+function updateOutputs(){
+ $('brightnessOut').textContent=$('brightness').value;
+ $('contrastOut').textContent=$('contrast').value+'%';
+ $('saturationOut').textContent=$('saturation').value+'%';
+ $('sharpOut').textContent=$('sharp').value;
+}
+['brightness','contrast','saturation','sharp'].forEach(id=>$(id).addEventListener('input',updateOutputs));
+function setLook(name){
+ const looks={
+  balanced:{brightness:0,contrast:104,saturation:105,sharp:3},
+  vivid:{brightness:2,contrast:112,saturation:128,sharp:5},
+  cinema:{brightness:-2,contrast:115,saturation:88,sharp:2}
+ };
+ Object.entries(looks[name]).forEach(([id,v])=>$(id).value=v);
+ document.querySelectorAll('[data-preset]').forEach(b=>b.classList.toggle('active',b.dataset.preset===name));
+ updateOutputs();
+}
+document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>setLook(b.dataset.preset)));
+updateOutputs();
+
+$('file').addEventListener('change',e=>{
+ videoFile=e.target.files?.[0]||null;
+ $('fileInfo').textContent=videoFile?`${videoFile.name} · ${(videoFile.size/1048576).toFixed(1)} MB`:'No video selected';
+ $('preview').hidden=!videoFile;
+ if(previewUrl)URL.revokeObjectURL(previewUrl);
+ if(videoFile){previewUrl=URL.createObjectURL(videoFile);$('preview').src=previewUrl;const probe=document.createElement('video');probe.preload='metadata';const probeUrl=URL.createObjectURL(videoFile);probe.onloadedmetadata=()=>{URL.revokeObjectURL(probeUrl);if(Number.isFinite(probe.duration)&&probe.duration>300){tell('Video is longer than 5 minutes. Please choose a video that is 5 minutes or shorter.');videoFile=null;$('file').value='';$('fileInfo').textContent='Video too long — maximum 5 minutes';$('preview').hidden=true;if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl=null;$('preview').removeAttribute('src');}else{tell('Video selected. Press AUTO EDIT VIDEO to start.')}};probe.onerror=()=>{URL.revokeObjectURL(probeUrl);tell('Video selected. If its length cannot be checked, try an MP4 video.');};probe.src=probeUrl}
+ $('download').style.display='none';prog(0);
+ if(resultUrl){URL.revokeObjectURL(resultUrl);resultUrl=null}
+});
+$('clear').addEventListener('click',()=>{
+ videoFile=null;$('file').value='';$('fileInfo').textContent='No video selected';$('preview').hidden=true;$('preview').removeAttribute('src');
+ if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl=null;
+ if(resultUrl)URL.revokeObjectURL(resultUrl);resultUrl=null;
+ $('download').style.display='none';prog(0);tell('Video cleared. Choose another video.');
+});
+$('reset').addEventListener('click',()=>{
+ Object.entries(defaults).forEach(([id,v])=>$(id).value=v);
+ $('noise').checked=true;$('enhance').checked=true;$('resolution').value='720';$('bitrate').value='6';$('fps').value='source';$('stabilize').value='off';setLook('balanced');tell('Adjustments reset to mobile-safe defaults.');
+});
+
+async function loadEngine(){
+ if(ready)return;
+ tell('Loading video engine from CDN. First use requires internet…');
+ const {FFmpeg}=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');
+ const {toBlobURL}=await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js');
+ ffmpeg=new FFmpeg();
+ ffmpeg.on('progress',({progress})=>prog(4+progress*93));
+ const base='https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+ await ffmpeg.load({coreURL:await toBlobURL(base+'/ffmpeg-core.js','text/javascript'),wasmURL:await toBlobURL(base+'/ffmpeg-core.wasm','application/wasm')});
+ ready=true;
+}
+$('run').addEventListener('click',async()=>{
+ if(!videoFile){tell('Please choose a video first.');return}
+ if(location.protocol==='content:'||location.protocol==='file:'||location.origin==='null'){tell('This HTML was opened as a local file. The FFmpeg Worker cannot load from origin null. Open the same HTML from an HTTPS website (for example GitHub Pages), then try again.');return}
+ const btn=$('run');btn.disabled=true;$('download').style.display='none';
+ try{
+  await loadEngine();
+  const ext=(videoFile.name.split('.').pop()||'mp4').replace(/[^a-z0-9]/gi,'').toLowerCase()||'mp4';
+  const input='aegis_input.'+ext, output='AEGIS_VVIP_EDITED.mp4';
+  tell('Loading video into memory…');await ffmpeg.writeFile(input,new Uint8Array(await videoFile.arrayBuffer()));
+  const b=Number($('brightness').value)/100;
+  const c=Number($('contrast').value)/100;
+  const s=Number($('saturation').value)/100;
+  const vf=[`eq=brightness=${b}:contrast=${c}:saturation=${s}`];
+  const sharp=Number($('sharp').value);
+  if(sharp>0)vf.push(`unsharp=3:3:${(sharp/10*0.8).toFixed(2)}:3:3:0`);
+  const res=$('resolution').value;
+  if(res==='720')vf.push('scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2');
+  if(res==='1080')vf.push('scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2');
+  if($('stabilize').value==='on')vf.push('deshake');
+  const args=['-i',input,'-vf',vf.join(',')];
+  const audio=[];
+  if($('noise').checked)audio.push('afftdn=nf=-22');
+  if($('enhance').checked)audio.push('highpass=f=80','acompressor=threshold=-18dB:ratio=2','loudnorm=I=-16:TP=-1.5:LRA=11');
+  if(audio.length)args.push('-af',audio.join(','));
+  const fps=$('fps').value;if(fps!=='source')args.push('-r',fps);
+  const br=$('bitrate').value;
+  args.push('-c:v','libx264','-preset','ultrafast','-b:v',br+'M','-maxrate',br+'M','-bufsize',(br*2)+'M','-pix_fmt','yuv420p','-c:a','aac','-b:a','128k','-movflags','+faststart',output);
+  tell('Editing in progress. Do not close this tab or switch away for a long time. The phone may warm up.');
+  await ffmpeg.exec(args);
+  const data=await ffmpeg.readFile(output);
+  resultUrl=URL.createObjectURL(new Blob([data.buffer],{type:'video/mp4'}));
+  $('download').style.display='block';
+  $('download').onclick=()=>{const a=document.createElement('a');a.href=resultUrl;a.download='AEGIS_VVIP_EDITED.mp4';a.click()};
+  prog(100);tell('Done! Tap DOWNLOAD EDITED VIDEO. Watch the result before deleting the original.');
+  try{await ffmpeg.deleteFile(input);await ffmpeg.deleteFile(output)}catch{}
+ }catch(err){
+  console.error(err);
+  tell('Could not finish editing. Try Chrome, a shorter clip, 720p, and Stabilization Off. If the page was opened inside another app, open the HTML in Chrome instead.\nTechnical detail: '+(err?.message||String(err)));
+ }finally{btn.disabled=false}
+});
+</script>
+</body>
+</html>
